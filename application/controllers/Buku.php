@@ -75,7 +75,7 @@ class Anggota extends REST_Controller {
             } else {
                 $this->response([
                     'status' => FALSE,
-                    'message' => 'Gagal dimasukan'
+                    'message' => 'Data tidak ditemukan'
                 ], REST_Controller::HTTP_OK);
             }
 
@@ -83,7 +83,7 @@ class Anggota extends REST_Controller {
         } else {
             $this->response([
                 'status' => FALSE,
-                'message' => validation_errors(' ',','),
+                'message' => validation_errors('-',','),
             ], REST_Controller::HTTP_OK);
         }
     }
@@ -117,7 +117,7 @@ class Anggota extends REST_Controller {
             } else {
                 $this->response([
                     'status' => FALSE,
-                    'message' => 'Gagal diubah'
+                    'message' => 'Data tidak ditemukan'
                 ], REST_Controller::HTTP_OK);
             }
 
@@ -125,14 +125,14 @@ class Anggota extends REST_Controller {
         } else {
             $this->response([
                 'status' => FALSE,
-                'message' => validation_errors(' ',' '),
+                'message' => validation_errors('-',','),
             ], REST_Controller::HTTP_OK);
         }
     }
 
-    function delete_get() {
+    function index_delete() {
         //menangkap nim dari url
-        $nim = $this->get('nim');
+        $nim = $this->delete('nim');
         
         //memanggil model + nim yang dikirim dari url
         $response = $this->anggota_model->delete($nim);
@@ -148,32 +148,9 @@ class Anggota extends REST_Controller {
         } else {
             $this->response([
                 'status' => FALSE,
-                'message' => 'Gagal dihapus'
+                'message' => 'Data tidak ditemukan'
             ], REST_Controller::HTTP_OK);
         }
     }
-
-    /*function index_delete() {
-        //menangkap nim dari url
-        $nim = $this->delete('nim');
-
-        //memanggil model + nim yang dikirim dari url
-        $response = $this->anggota_model->delete($nim);
-
-        //jika data ditemukan
-        if ($response) {
-            $this->response([
-                'status' => TRUE,
-                'message' => 'Data berhasil dihapus'
-            ], REST_Controller::HTTP_OK);
-
-        //jika data tidak ditemukan
-        } else {
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Gagal dihapus'
-            ], REST_Controller::HTTP_OK);
-        }
-    }*/
 }
 ?>
