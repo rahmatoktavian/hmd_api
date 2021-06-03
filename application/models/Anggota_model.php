@@ -9,7 +9,7 @@ class Anggota_model extends CI_Model {
 		//sql read
 		$this->db->select('*');
 		$this->db->from('anggota');
-		$this->db->order_by('nim', 'ASC');
+		$this->db->order_by('nim', 'DESC');
 		$query = $this->db->get();
 
 		//$query->result_array = mengirim data ke controller dalam bentuk semua data

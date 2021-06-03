@@ -2,22 +2,22 @@
 
 include_once(APPPATH.'libraries/REST_Controller.php');
 
-class Anggota extends REST_Controller {
+class Kategori_buku extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('anggota_model'));
+        $this->load->model(array('kategori_buku_model'));
     }
 
     function index_get() {
         //memanggil model
-        $response = $this->anggota_model->read();
+        $response = $this->kategori_buku_model->read();
        
         //jika data ditemukan
         if ($response) {
             $this->response([
                 'status' => TRUE,
-                'data' => $response,
+                'data' => $response
             ], REST_Controller::HTTP_OK);
 
         //jika data tidak ditemukan
@@ -30,11 +30,11 @@ class Anggota extends REST_Controller {
     }
 
     function detail_get() {
-        //menangkap nim dari url
-        $nim = $this->get('nim');
+        //menangkap id dari url
+        $id = $this->get('id');
         
-        //memanggil model + nim yang dikirim dari url
-        $response = $this->anggota_model->read_single($nim);
+        //memanggil model + id yang dikirim dari url
+        $response = $this->kategori_buku_model->read_single($id);
 
         if ($response) {
             $this->response([
@@ -54,15 +54,13 @@ class Anggota extends REST_Controller {
         $data = $this->post();
         $this->form_validation->set_data($data);
 
-        $this->form_validation->set_rules('nim', 'nim', 'required|numeric|is_unique[anggota.nim]');
-        $this->form_validation->set_rules('nama', 'nama', 'required');
-        $this->form_validation->set_rules('jurusan', 'jurusan', 'required');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
 
         //jika validasi berhasil
         if ($this->form_validation->run() == TRUE) {
 
             //memanggil model untuk insert
-            $response = $this->anggota_model->insert($data);
+            $response = $this->kategori_buku_model->insert($data);
 
             //jika data ditemukan
             if ($response) {
@@ -93,18 +91,16 @@ class Anggota extends REST_Controller {
         $data = $this->put();
         $this->form_validation->set_data($data);
 
-        $this->form_validation->set_rules('nim', 'nim', 'required|numeric');
-        $this->form_validation->set_rules('nama', 'nama', 'required');
-        $this->form_validation->set_rules('jurusan', 'jurusan', 'required');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
 
         //jika validasi berhasil
         if ($this->form_validation->run() == TRUE) {
 
             //menangkap data dari form api
-            $nim = $this->put('nim');
+            $id = $this->put('id');
 
             //memanggil model untuk update
-            $response = $this->anggota_model->update($data, $nim);
+            $response = $this->kategori_buku_model->update($data, $id);
             
             //jika data ditemukan
             if ($response) {
@@ -131,11 +127,11 @@ class Anggota extends REST_Controller {
     }
 
     function delete_get() {
-        //menangkap nim dari url
-        $nim = $this->get('nim');
+        //menangkap id dari url
+        $id = $this->get('id');
         
-        //memanggil model + nim yang dikirim dari url
-        $response = $this->anggota_model->delete($nim);
+        //memanggil model + id yang dikirim dari url
+        $response = $this->kategori_buku_model->delete($id);
 
         //jika data ditemukan
         if ($response) {
@@ -154,11 +150,11 @@ class Anggota extends REST_Controller {
     }
 
     /*function index_delete() {
-        //menangkap nim dari url
-        $nim = $this->delete('nim');
+        //menangkap id dari url
+        $id = $this->delete('id');
 
-        //memanggil model + nim yang dikirim dari url
-        $response = $this->anggota_model->delete($nim);
+        //memanggil model + id yang dikirim dari url
+        $response = $this->kategori_buku_model->delete($id);
 
         //jika data ditemukan
         if ($response) {
