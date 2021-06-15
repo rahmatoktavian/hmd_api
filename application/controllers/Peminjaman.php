@@ -98,7 +98,7 @@ class Peminjaman extends REST_Controller {
         $this->form_validation->set_rules('nim', 'NIM', 'required|numeric');
         $this->form_validation->set_rules('petugas_id', 'Petugas ID', 'required|numeric');
         $this->form_validation->set_rules('tanggal_pinjam', 'Tanggal Pinjam', 'required');
-        $this->form_validation->set_rules('tanggal_batas_kembali', 'Tanggal Batas Kembali', 'required|numeric');
+        $this->form_validation->set_rules('tanggal_batas_kembali', 'Tanggal Batas Kembali', 'required');
 
         //jika validasi berhasil
         if ($this->form_validation->run() == TRUE) {

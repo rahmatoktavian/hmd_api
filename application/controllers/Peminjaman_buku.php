@@ -6,7 +6,7 @@ class Peminjaman_buku extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('peminjaman_buku_model'));
+        $this->load->model(array('peminjaman_buku_model', 'buku_model'));
     }
 
     function index_get() {
@@ -81,6 +81,63 @@ class Peminjaman_buku extends REST_Controller {
                 ], REST_Controller::HTTP_OK);
             }
 
+        //jika validasi gagal
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => validation_errors(' ',','),
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    function insert_trans_post() {
+        //aturan validasi
+        $data = $this->post();
+        $this->form_validation->set_data($data);
+
+        $this->form_validation->set_rules('buku_id', 'Buku ID', 'required|numeric');
+        $this->form_validation->set_rules('peminjaman_id', 'Peminjaman ID', 'required|numeric');
+
+        //jika validasi berhasil
+        if ($this->form_validation->run() == TRUE) {
+
+            //proses multi query
+		    $this->db->trans_begin();
+
+            //memanggil model untuk insert
+            $this->peminjaman_buku_model->insert($data);
+
+            //ambil stok buku
+            $buku_id = $data['buku_id'];
+            $data_buku = $this->buku_model->read_single($buku_id);
+            $stok_buku_baru = $data_buku['stok'] - 1;
+            
+            //kurangi stok buku
+            $input_buku = array(
+                            'stok' => $stok_buku_baru
+                        );
+
+            $this->buku_model->update($input_buku, $buku_id);
+
+            //batalkan semua query (jika ada error)
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Gagal dimasukan'
+                ], REST_Controller::HTTP_OK);
+
+            //execute semua query (jika tidak ada error)
+            } else {
+                $this->db->trans_commit();
+
+                $this->response([
+                    'status' => TRUE,
+                    'message' => 'Data berhasil dimasukan'
+                ], REST_Controller::HTTP_OK);
+            }
+            
         //jika validasi gagal
         } else {
             $this->response([
