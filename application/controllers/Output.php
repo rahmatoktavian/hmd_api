@@ -9,7 +9,7 @@ class Output extends REST_Controller {
         $this->load->model(array('output_model'));
     }
 
-    function rekap_peminjaman_perhari_get() {
+    function rekap_peminjaman_perhari_post() {
         //memanggil model
         $response = $this->output_model->rekap_peminjaman_perhari();
        
@@ -29,10 +29,33 @@ class Output extends REST_Controller {
         }
     }
 
-    function rekap_buku_perkategori_get() {
+    function rekap_buku_perkategori_post() {
         //memanggil model
         $response = $this->output_model->rekap_buku_perkategori();
        
+        //jika data ditemukan
+        if ($response) {
+            $this->response([
+                'status' => TRUE,
+                'data' => $response
+            ], REST_Controller::HTTP_OK);
+
+        //jika data tidak ditemukan
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Data tidak ditemukan'
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    function detil_peminjaman_post() {
+        //parameter
+        $filter = $this->post();
+
+        //memanggil model
+        $response = $this->output_model->detil_peminjaman($filter);
+
         //jika data ditemukan
         if ($response) {
             $this->response([

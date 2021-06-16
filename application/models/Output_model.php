@@ -32,4 +32,36 @@ class Output_model extends CI_Model {
         return $query->result_array();
 	}
 
+	public function detil_peminjaman($filter) {
+
+		//sql read
+		$this->db->select('peminjaman.*');
+		$this->db->select('anggota.nama AS nama_anggota');
+		$this->db->select('petugas.nama AS nama_petugas');
+		$this->db->from('peminjaman');
+		$this->db->join('anggota', 'peminjaman.nim = anggota.nim');
+		$this->db->join('petugas', 'peminjaman.petugas_id = petugas.id');
+
+		//filter
+		if(!empty($filter['tanggal_pinjam_mulai']))
+			$this->db->where('peminjaman.tanggal_pinjam >=', $filter['tanggal_pinjam_mulai']);
+
+		if(!empty($filter['tanggal_pinjam_akhir']))
+			$this->db->where('peminjaman.tanggal_pinjam <=', $filter['tanggal_pinjam_akhir']);
+
+		if(!empty($filter['nama_anggota']))
+			$this->db->like('anggota.nama', $filter['nama_anggota']);
+		
+		if(!empty($filter['petugas_id']))
+			$this->db->where('peminjaman.petugas_id', $filter['petugas_id']);
+		//end filter
+
+		$this->db->order_by('anggota.nama');
+		$this->db->order_by('peminjaman.tanggal_pinjam');
+		$query = $this->db->get();
+
+		//$query->result_array = mengirim data ke controller dalam bentuk semua data
+        return $query->result_array();
+	}
+
 }
