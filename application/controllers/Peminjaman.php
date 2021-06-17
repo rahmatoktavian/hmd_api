@@ -29,6 +29,29 @@ class Peminjaman extends REST_Controller {
         }
     }
 
+    function saya_get() {
+        //menangkap id dari url
+        $nim = $this->get('nim');
+
+        //memanggil model
+        $response = $this->peminjaman_model->read_saya($nim);
+       
+        //jika data ditemukan
+        if ($response) {
+            $this->response([
+                'status' => TRUE,
+                'data' => $response
+            ], REST_Controller::HTTP_OK);
+
+        //jika data tidak ditemukan
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Data tidak ditemukan'
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
     function detail_get() {
         //menangkap id dari url
         $id = $this->get('id');
