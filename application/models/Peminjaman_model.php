@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Peminjaman_model extends CI_Model {
 
 	//function read berfungsi mengambil/read data dari table peminjaman di database
-	public function read() {
+	public function read($filter) {
 
 		//sql read
 		$this->db->select('peminjaman.*');
@@ -13,6 +13,15 @@ class Peminjaman_model extends CI_Model {
 		$this->db->from('peminjaman');
 		$this->db->join('anggota', 'peminjaman.nim = anggota.nim');
 		$this->db->join('petugas', 'peminjaman.petugas_id = petugas.id');
+
+		if(!empty($filter['nim'])) {
+			$this->db->where('peminjaman.nim', $filter['nim']);
+		}
+
+		if(!empty($filter['petugas_id'])) {
+			$this->db->where('peminjaman.petugas_id', $filter['petugas_id']);
+		}
+
 		$this->db->order_by('peminjaman.id', 'DESC');
 		$query = $this->db->get();
 
@@ -20,23 +29,6 @@ class Peminjaman_model extends CI_Model {
         return $query->result_array();
 	}
 
-	public function read_saya($nim) {
-
-		//sql read
-		$this->db->select('peminjaman.*');
-		$this->db->select('anggota.nama AS nama_anggota');
-		$this->db->select('petugas.nama AS nama_petugas');
-		$this->db->from('peminjaman');
-		$this->db->join('anggota', 'peminjaman.nim = anggota.nim');
-		$this->db->join('petugas', 'peminjaman.petugas_id = petugas.id');
-		$this->db->where('peminjaman.nim', $nim);
-		$this->db->order_by('peminjaman.id', 'DESC');
-		$query = $this->db->get();
-
-		//$query->result_array = mengirim data ke controller dalam bentuk semua data
-        return $query->result_array();
-	}
-	
 	//function read berfungsi mengambil/read data dari table peminjaman di database
 	public function read_single($id) {
 

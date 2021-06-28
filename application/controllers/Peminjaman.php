@@ -12,7 +12,31 @@ class Peminjaman extends REST_Controller {
     function index_get() {
         //memanggil model
         $response = $this->peminjaman_model->read();
-       
+
+        //jika data ditemukan
+        if ($response) {
+            $this->response([
+                'status' => TRUE,
+                'data' => $response
+            ], REST_Controller::HTTP_OK);
+
+        //jika data tidak ditemukan
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Data tidak ditemukan'
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    function petugas_get() {
+      //menangkap id dari url
+      $petugas_id = $this->get('petugas_id');
+      $filter = array('petugas_id' => $petugas_id);
+
+      //memanggil model
+      $response = $this->peminjaman_model->read($filter);
+
         //jika data ditemukan
         if ($response) {
             $this->response([
@@ -32,10 +56,11 @@ class Peminjaman extends REST_Controller {
     function saya_get() {
         //menangkap id dari url
         $nim = $this->get('nim');
+        $filter = array('nim' => $nim);
 
         //memanggil model
-        $response = $this->peminjaman_model->read_saya($nim);
-       
+        $response = $this->peminjaman_model->read($filter);
+
         //jika data ditemukan
         if ($response) {
             $this->response([
@@ -55,7 +80,7 @@ class Peminjaman extends REST_Controller {
     function detail_get() {
         //menangkap id dari url
         $id = $this->get('id');
-        
+
         //memanggil model + id yang dikirim dari url
         $response = $this->peminjaman_model->read_single($id);
 
@@ -131,7 +156,7 @@ class Peminjaman extends REST_Controller {
 
             //memanggil model untuk update
             $response = $this->peminjaman_model->update($data, $id);
-            
+
             //jika data ditemukan
             if ($response) {
                 $this->response([
@@ -159,7 +184,7 @@ class Peminjaman extends REST_Controller {
     function delete_get() {
         //menangkap id dari url
         $id = $this->get('id');
-        
+
         //memanggil model + id yang dikirim dari url
         $response = $this->peminjaman_model->delete($id);
 

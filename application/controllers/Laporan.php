@@ -2,17 +2,17 @@
 
 include_once(APPPATH.'libraries/REST_Controller.php');
 
-class Output extends REST_Controller {
+class Laporan extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('output_model'));
+        $this->load->model(array('laporan_model'));
     }
 
     function rekap_peminjaman_perhari_post() {
         //memanggil model
-        $response = $this->output_model->rekap_peminjaman_perhari();
-       
+        $response = $this->laporan_model->rekap_peminjaman_perhari();
+
         //jika data ditemukan
         if ($response) {
             $this->response([
@@ -31,8 +31,8 @@ class Output extends REST_Controller {
 
     function rekap_buku_perkategori_post() {
         //memanggil model
-        $response = $this->output_model->rekap_buku_perkategori();
-       
+        $response = $this->laporan_model->rekap_buku_perkategori();
+
         //jika data ditemukan
         if ($response) {
             $this->response([
@@ -54,7 +54,7 @@ class Output extends REST_Controller {
         $filter = $this->post();
 
         //memanggil model
-        $response = $this->output_model->detil_peminjaman($filter);
+        $response = $this->laporan_model->detil_peminjaman($filter);
 
         //jika data ditemukan
         if ($response) {

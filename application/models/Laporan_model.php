@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Output_model extends CI_Model {
+class Laporan_model extends CI_Model {
 
 	//function read berfungsi mengambil/read data dari table peminjaman di database
 	public function rekap_peminjaman_perhari() {
@@ -51,7 +51,7 @@ class Output_model extends CI_Model {
 
 		if(!empty($filter['nama_anggota']))
 			$this->db->like('anggota.nama', $filter['nama_anggota']);
-		
+
 		if(!empty($filter['petugas_id']))
 			$this->db->where('peminjaman.petugas_id', $filter['petugas_id']);
 		//end filter
