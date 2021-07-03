@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Peminjaman_model extends CI_Model {
 
 	//function read berfungsi mengambil/read data dari table peminjaman di database
-	public function read($filter) {
+	public function read($filter=array()) {
 
 		//sql read
 		$this->db->select('peminjaman.*');
