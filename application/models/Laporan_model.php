@@ -8,9 +8,9 @@ class Laporan_model extends CI_Model {
 		//sql read
 		$this->db->select('tanggal_pinjam, count(id) AS total_pinjam');
 		$this->db->from('peminjaman');
-        $this->db->group_by('tanggal_pinjam');
+    $this->db->group_by('tanggal_pinjam');
 		$this->db->order_by('tanggal_pinjam', 'DESC');
-        $this->db->limit(7);
+
 		$query = $this->db->get();
 
 		//$query->result_array = mengirim data ke controller dalam bentuk semua data
@@ -22,10 +22,9 @@ class Laporan_model extends CI_Model {
 		//sql read
 		$this->db->select('kategori_buku.nama, count(buku.id) AS total_buku');
 		$this->db->from('buku');
-        $this->db->join('kategori_buku', 'buku.kategori_id = kategori_buku.id');
-        $this->db->group_by('kategori_buku.nama');
+    $this->db->join('kategori_buku', 'buku.kategori_id = kategori_buku.id');
+    $this->db->group_by('kategori_buku.nama');
 		$this->db->order_by('kategori_buku.nama', 'ASC');
-        $this->db->limit(5);
 		$query = $this->db->get();
 
 		//$query->result_array = mengirim data ke controller dalam bentuk semua data
@@ -35,7 +34,7 @@ class Laporan_model extends CI_Model {
 	public function detil_peminjaman($filter) {
 
 		//sql read
-		$this->db->select('peminjaman.*');
+		$this->db->select('peminjaman.tanggal_pinjam, peminjaman.tanggal_batas_kembali');
 		$this->db->select('anggota.nama AS nama_anggota');
 		$this->db->select('petugas.nama AS nama_petugas');
 		$this->db->from('peminjaman');

@@ -32,7 +32,7 @@ class Laporan extends REST_Controller {
     function rekap_buku_perkategori_post() {
         //memanggil model
         $response = $this->laporan_model->rekap_buku_perkategori();
-
+        
         //jika data ditemukan
         if ($response) {
             $this->response([
