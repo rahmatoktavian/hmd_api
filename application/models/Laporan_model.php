@@ -9,8 +9,8 @@ class Laporan_model extends CI_Model {
 		$this->db->select('tanggal_pinjam, count(id) AS total_pinjam');
 		$this->db->from('peminjaman');
     $this->db->group_by('tanggal_pinjam');
-		$this->db->order_by('tanggal_pinjam', 'DESC');
-
+		$this->db->order_by('tanggal_pinjam', 'ASC');
+		
 		$query = $this->db->get();
 
 		//$query->result_array = mengirim data ke controller dalam bentuk semua data
